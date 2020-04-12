@@ -1,0 +1,34 @@
+
+import Declaration from '../declaration.js';
+
+class OverscrollBehavior extends Declaration {
+  static names = ['overscroll-behavior', 'scroll-chaining']
+
+  /**
+   * Change property name for IE
+   */
+  prefixed (prop, prefix) {
+    return prefix + 'scroll-chaining'
+  }
+
+  /**
+   * Return property name by spec
+   */
+  normalize () {
+    return 'overscroll-behavior'
+  }
+
+  /**
+   * Change value for IE
+   */
+  set (decl, prefix) {
+    if (decl.value === 'auto') {
+      decl.value = 'chained'
+    } else if (decl.value === 'none' || decl.value === 'contain') {
+      decl.value = 'none'
+    }
+    return super.set(decl, prefix)
+  }
+}
+
+export default OverscrollBehavior;
