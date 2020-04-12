@@ -1,13 +1,11 @@
-//import * as mozilla from 'source-map';
+import { mozilla } from '../deps.js';
 
 /**
  * @param plugins Can also be included with the Processor#use method.
  * @returns A processor that will apply plugins as CSS processors.
  */
 declare function postcss(plugins?: postcss.AcceptedPlugin[]): postcss.Processor;
-declare function postcss(
-  ...plugins: postcss.AcceptedPlugin[]
-): postcss.Processor;
+declare function postcss(...plugins: postcss.AcceptedPlugin[]): postcss.Processor;
 declare namespace postcss {
   type AcceptedPlugin = Plugin<any> | Transformer | {
     postcss: TransformCallback | Processor;
@@ -19,10 +17,7 @@ declare namespace postcss {
    * @param initializer Will receive plugin options and should return functions
    * to modify nodes in input CSS.
    */
-  function plugin<T>(
-    name: string,
-    initializer: PluginInitializer<T>,
-  ): Plugin<T>;
+  function plugin<T>(name: string, initializer: PluginInitializer<T>): Plugin<T>;
   interface Plugin<T> extends Transformer {
     (opts?: T): Transformer;
     postcss: Transformer;
@@ -61,10 +56,10 @@ declare namespace postcss {
   }
   type ParserInput = string | { toString(): string };
   interface Parser {
-    (css: ParserInput, opts?: Pick<ProcessOptions, "map" | "from">): Root;
+    (css: ParserInput, opts?: Pick<ProcessOptions, 'map' | 'from'>): Root;
   }
   interface Builder {
-    (part: string, node?: Node, type?: "start" | "end"): void;
+    (part: string, node?: Node, type?: 'start' | 'end'): void;
   }
   interface Stringifier {
     (node: Node, builder: Builder): void;
@@ -187,10 +182,7 @@ declare namespace postcss {
      * stream. If a Result instance is passed the processor will take the
      * existing Root parser from it.
      */
-    process(
-      css: ParserInput | Result | LazyResult | Root,
-      options?: ProcessOptions,
-    ): LazyResult;
+    process(css: ParserInput | Result | LazyResult | Root, options?: ProcessOptions): LazyResult;
     /**
      * Contains plugins added to this processor.
      */
@@ -380,8 +372,7 @@ declare namespace postcss {
      * @param mapping
      * @returns {}
      */
-    //addMapping(mapping: mozilla.Mapping): void;
-    addMapping(mapping: any): void;
+    addMapping(mapping: mozilla.Mapping): void;
     /**
      * Set the source content for an original source file.
      * @param sourceFile The URL of the original source file.
@@ -405,16 +396,14 @@ declare namespace postcss {
      * thus, not needing any rewriting (Supplying '.' has the same effect).
      */
     applySourceMap(
-      //sourceMapConsumer: mozilla.SourceMapConsumer,
-      sourceMapConsumer: any,
+      sourceMapConsumer: mozilla.SourceMapConsumer,
       sourceFile?: string,
-      sourceMapPath?: string,
+      sourceMapPath?: string
     ): void;
     /**
      * Renders the source map being generated to JSON.
      */
-    //toJSON: () => mozilla.RawSourceMap;
-    toJSON: () => any;
+    toJSON: () => mozilla.RawSourceMap;
     /**
      * Renders the source map being generated to a string.
      */
@@ -546,20 +535,14 @@ declare namespace postcss {
     text: string;
     file: string;
     constructor(css: any, opts: any);
-    //consumer(): mozilla.SourceMapConsumer;
-    consumer(): any;
+    consumer(): mozilla.SourceMapConsumer;
     withContent(): boolean;
     startWith(string: string, start: string): boolean;
     loadAnnotation(css: string): void;
     decodeInline(text: string): string;
     loadMap(
       file: any,
-      prev:
-        | string
-        | Function,
-      //| mozilla.SourceMapConsumer
-      //| mozilla.SourceMapGenerator
-      //| mozilla.RawSourceMap,
+      prev: string | Function | mozilla.SourceMapConsumer | mozilla.SourceMapGenerator | mozilla.RawSourceMap
     ): string;
     isMap(map: any): boolean;
   }
@@ -632,9 +615,7 @@ declare namespace postcss {
       /**
        * Error description.
        */
-      message: string,
-      options?: NodeErrorOptions,
-    ): CssSyntaxError;
+      message: string, options?: NodeErrorOptions): CssSyntaxError;
     /**
      * Creates an instance of Warning and adds it to messages. This method is
      * provided as a convenience wrapper for Result#warn.
@@ -860,10 +841,7 @@ declare namespace postcss {
      * @returns True if the callback returns true for all of the container's
      * children.
      */
-    every(
-      callback: (node: ChildNode, index: number, nodes: ChildNode[]) => any,
-      thisArg?: any,
-    ): boolean;
+    every(callback: (node: ChildNode, index: number, nodes: ChildNode[]) => any, thisArg?: any): boolean;
     /**
      * Determines whether the specified callback returns true for any child node.
      * @param callback A function that accepts up to three arguments. The some
@@ -875,10 +853,7 @@ declare namespace postcss {
      * @returns True if callback returns true for (at least) one of the
      * container's children.
      */
-    some(
-      callback: (node: ChildNode, index: number, nodes: ChildNode[]) => boolean,
-      thisArg?: any,
-    ): boolean;
+    some(callback: (node: ChildNode, index: number, nodes: ChildNode[]) => boolean, thisArg?: any): boolean;
     /**
      * Iterates through the container's immediate children, calling the
      * callback function for each child. If you need to recursively iterate
@@ -907,13 +882,8 @@ declare namespace postcss {
      * declarations whose property matches propFilter will be iterated over.
      * @param callback Called for each declaration node within the container.
      */
-    walkDecls(
-      propFilter: string | RegExp,
-      callback?: (decl: Declaration, index: number) => any,
-    ): boolean | void;
-    walkDecls(
-      callback: (decl: Declaration, index: number) => any,
-    ): boolean | void;
+    walkDecls(propFilter: string | RegExp, callback?: (decl: Declaration, index: number) => any): boolean | void;
+    walkDecls(callback: (decl: Declaration, index: number) => any): boolean | void;
     /**
      * Traverses the container's descendant nodes, calling `callback` for each
      * at-rule. Like container.each(), this method is safe to use if you are
@@ -923,13 +893,8 @@ declare namespace postcss {
      * @param callback Iterator called for each at-rule node within the
      * container.
      */
-    walkAtRules(
-      nameFilter: string | RegExp,
-      callback: (atRule: AtRule, index: number) => any,
-    ): boolean | void;
-    walkAtRules(
-      callback: (atRule: AtRule, index: number) => any,
-    ): boolean | void;
+    walkAtRules(nameFilter: string | RegExp, callback: (atRule: AtRule, index: number) => any): boolean | void;
+    walkAtRules(callback: (atRule: AtRule, index: number) => any): boolean | void;
     /**
      * Traverses the container's descendant nodes, calling `callback` for each
      * rule. Like container.each(), this method is safe to use if you are
@@ -939,24 +904,16 @@ declare namespace postcss {
      * @param callback Iterator called for each rule node within the
      * container.
      */
-    walkRules(
-      selectorFilter: string | RegExp,
-      callback: (atRule: Rule, index: number) => any,
-    ): boolean | void;
+    walkRules(selectorFilter: string | RegExp, callback: (atRule: Rule, index: number) => any): boolean | void;
     walkRules(callback: (atRule: Rule, index: number) => any): boolean | void;
-    walkRules(
-      selectorFilter: any,
-      callback?: (atRule: Rule, index: number) => any,
-    ): boolean | void;
+    walkRules(selectorFilter: any, callback?: (atRule: Rule, index: number) => any): boolean | void;
     /**
      * Traverses the container's descendant nodes, calling `callback` for each
      * comment. Like container.each(), this method is safe to use if you are
      * mutating arrays during iteration.
      * @param callback Iterator called for each comment node within the container.
      */
-    walkComments(
-      callback: (comment: Comment, indexed: number) => any,
-    ): void | boolean;
+    walkComments(callback: (comment: Comment, indexed: number) => any): void | boolean;
     /**
      * Passes all declaration values within the container that match pattern
      * through the callback, replacing those values with the returned result of
@@ -970,19 +927,19 @@ declare namespace postcss {
      */
     replaceValues(pattern: string | RegExp, options: {
       /**
-         * Property names. The method will only search for values that match
-         * regexp  within declarations of listed properties.
-         */
+       * Property names. The method will only search for values that match
+       * regexp  within declarations of listed properties.
+       */
       props?: string[];
       /**
-         * Used to narrow down values and speed up the regexp search. Searching
-         * every single value with a regexp can be slow. If you pass a fast
-         * string, PostCSS will first check whether the value contains the fast
-         * string; and only if it does will PostCSS check that value against
-         * regexp. For example, instead of just checking for /\d+rem/ on all
-         * values, set fast: 'rem' to first check whether a value has the rem
-         * unit, and only if it does perform the regexp check.
-         */
+       * Used to narrow down values and speed up the regexp search. Searching
+       * every single value with a regexp can be slow. If you pass a fast
+       * string, PostCSS will first check whether the value contains the fast
+       * string; and only if it does will PostCSS check that value against
+       * regexp. For example, instead of just checking for /\d+rem/ on all
+       * values, set fast: 'rem' to first check whether a value has the rem
+       * unit, and only if it does perform the regexp check.
+       */
       fast?: string;
     }, callbackOrReplaceValue: string | {
       (substring: string, ...args: any[]): string;
@@ -1027,19 +984,13 @@ declare namespace postcss {
      * @param oldNode Child or child's index.
      * @returns This container for chaining.
      */
-    insertBefore(
-      oldNode: ChildNode | number,
-      newNode: ChildNode | object | string,
-    ): this;
+    insertBefore(oldNode: ChildNode | number, newNode: ChildNode | object | string): this;
     /**
      * Insert newNode after oldNode within the container.
      * @param oldNode Child or child's index.
      * @returns This container for chaining.
      */
-    insertAfter(
-      oldNode: ChildNode | number,
-      newNode: ChildNode | object | string,
-    ): this;
+    insertAfter(oldNode: ChildNode | number, newNode: ChildNode | object | string): this;
     /**
      * Removes the container from its parent and cleans the parent property in the
      * container and its children.
@@ -1085,10 +1036,10 @@ declare namespace postcss {
     last?: ChildNode;
   }
   /**
-     * Represents a CSS file and contains all its parsed nodes.
-     */
+   * Represents a CSS file and contains all its parsed nodes.
+   */
   interface Root extends ContainerBase {
-    type: "root";
+    type: 'root';
     /**
      * Inherited from Container. Should always be undefined for a Root node.
      */
@@ -1127,7 +1078,7 @@ declare namespace postcss {
    * node will have a nodes property representing its children.
    */
   interface AtRule extends ContainerBase {
-    type: "atrule";
+    type: 'atrule';
     /**
      * Returns the atrule's parent node.
      */
@@ -1178,7 +1129,7 @@ declare namespace postcss {
    * Represents a CSS rule: a selector followed by a declaration block.
    */
   interface Rule extends ContainerBase {
-    type: "rule";
+    type: 'rule';
     /**
      * Returns the rule's parent node.
      */
@@ -1236,7 +1187,7 @@ declare namespace postcss {
    * Represents a CSS declaration.
    */
   interface Declaration extends NodeBase {
-    type: "decl";
+    type: 'decl';
     /**
      * Returns the declaration's parent node.
      */
@@ -1298,7 +1249,7 @@ declare namespace postcss {
    * be stored in the Node#raws properties.
    */
   interface Comment extends NodeBase {
-    type: "comment";
+    type: 'comment';
     /**
      * Returns the comment's parent node.
      */
