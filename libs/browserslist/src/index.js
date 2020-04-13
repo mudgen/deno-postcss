@@ -322,14 +322,15 @@ function filterAndroid(list, versions, context) {
  * the select function in `queries`.
  * @returns {string[]} A list of browsers
  */
-function resolve(queries, context) {
+async function resolve(queries, context) {
   if (Array.isArray(queries)) {
     queries = flatten(queries.map(parse));
   } else {
     queries = parse(queries);
   }
 
-  return queries.reduce(function (result, query, index) {
+  return queries.reduce(async function (result, query, index) {
+    result = await result;
     var selection = query.queryString;
 
     var isExclude = selection.indexOf("not ") === 0;
@@ -348,7 +349,8 @@ function resolve(queries, context) {
       var match = selection.match(type.regexp);
       if (match) {
         var args = [context].concat(match.slice(1));
-        var array = type.select.apply(browserslist, args).map(function (j) {
+        var array = await Promise.resolve(type.select.apply(browserslist, args));
+        array = array.map(function (j) {
           var parts = j.split(" ");
           if (parts[1] === "0") {
             return parts[0] + " " + byName(parts[0], context).versions[0];
@@ -385,7 +387,7 @@ function resolve(queries, context) {
     }
 
     throw unknownQuery(selection);
-  }, []);
+  }, Promise.resolve([]));
 }
 
 var cache = {};
@@ -415,7 +417,7 @@ var cache = {};
  * @example
  * browserslist('IE >= 10, IE 8') //=> ['ie 11', 'ie 10', 'ie 8']
  */
-export function browserslist(queries, opts) {
+export async function browserslist(queries, opts) {
   if (typeof opts === "undefined") opts = {};
 
   if (typeof opts.path === "undefined") {
@@ -455,7 +457,7 @@ export function browserslist(queries, opts) {
   var cacheKey = JSON.stringify([queries, context]);
   if (cache[cacheKey]) return cache[cacheKey];
 
-  var result = uniq(resolve(queries, context)).sort(function (name1, name2) {
+  var result = uniq(await resolve(queries, context)).sort(function (name1, name2) {
     name1 = name1.split(" ");
     name2 = name2.split(" ");
     if (name1[0] === name2[0]) {
@@ -1133,8 +1135,8 @@ var QUERIES = [
   },
   {
     regexp: /^extends (.+)$/i,
-    select: function (context, name) {
-      return resolve(env.loadQueries(context, name), context);
+    select: async function (context, name) {
+      return resolve(await env.loadQueries(context, name), context);
     },
   },
   {

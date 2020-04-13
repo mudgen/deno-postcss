@@ -66,6 +66,7 @@ async function exec() {
   Value.hack(await import("./hacks/display-grid.js"));
   Value.hack(await import("./hacks/filter-value.js"));
 }
+await exec();
 
 let declsCache = {};
 

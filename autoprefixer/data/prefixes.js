@@ -55,7 +55,9 @@ async function asyncFunction() {
   }
 
   // Border Radius
+
   f(
+    // eslint-disable-line
     await import("../../libs/caniuse-lite/data/features/border-radius.js"),
     (browsers) =>
       prefix([
@@ -1054,5 +1056,5 @@ async function asyncFunction() {
   );
 }
 
-asyncFunction();
+await asyncFunction();
 export default result;

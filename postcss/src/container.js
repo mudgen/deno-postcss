@@ -325,9 +325,9 @@ class Container extends Node {
    * root.append('a {}')
    * root.first.append('color: black; z-index: 1')
    */
-  append(...children) {
+  async append(...children) {
     for (let child of children) {
-      let nodes = this.normalize(child, this.last);
+      let nodes = await this.normalize(child, this.last);
       for (let node of nodes) this.nodes.push(node);
     }
     return this;
@@ -353,10 +353,10 @@ class Container extends Node {
    * root.append('a {}')
    * root.first.append('color: black; z-index: 1')
    */
-  prepend(...children) {
+  async prepend(...children) {
     children = children.reverse();
     for (let child of children) {
-      let nodes = this.normalize(child, this.first, "prepend").reverse();
+      let nodes = await this.normalize(child, this.first, "prepend").reverse();
       for (let node of nodes) this.nodes.unshift(node);
       for (let id in this.indexes) {
         this.indexes[id] = this.indexes[id] + nodes.length;
@@ -383,11 +383,11 @@ class Container extends Node {
    * @example
    * rule.insertBefore(decl, decl.clone({ prop: '-webkit-' + decl.prop }))
    */
-  insertBefore(exist, add) {
+  async insertBefore(exist, add) {
     exist = this.index(exist);
 
     let type = exist === 0 ? "prepend" : false;
-    let nodes = this.normalize(add, this.nodes[exist], type).reverse();
+    let nodes = await this.normalize(add, this.nodes[exist], type).reverse();
     for (let node of nodes) this.nodes.splice(exist, 0, node);
 
     let index;
@@ -409,10 +409,10 @@ class Container extends Node {
    *
    * @return {Node} This node for methods chain.
    */
-  insertAfter(exist, add) {
+  async insertAfter(exist, add) {
     exist = this.index(exist);
 
-    let nodes = this.normalize(add, this.nodes[exist]).reverse();
+    let nodes = await this.normalize(add, this.nodes[exist]).reverse();
     for (let node of nodes) this.nodes.splice(exist + 1, 0, node);
 
     let index;
