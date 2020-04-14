@@ -1,2 +1,5 @@
 # deno-postcss
-Port of postcss to deno.
+Porting PostCSS and some of its plugins and their dependencies to deno.
+
+This project is not ready to be used yet. It is getting there!
+ 
